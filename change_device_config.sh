@@ -8,7 +8,7 @@
 if command -v snmpset >/dev/null 2>&1 ; then
     echo "snmpset found"
 else
-    echo "snmp not found"
+    echo "snmpset not found"
 fi
 
 getHostname(){
