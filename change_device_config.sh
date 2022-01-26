@@ -1,6 +1,7 @@
 ### This is a simple script that will take a list of IP addresses (devices.txt) and use SNMPv2 to change the configuration 
 ### of Cisco devices. As long as the SNMP admin string is known, this is a much faster way to make changes on many devices
-### than using an automated SSH script. It uses the snmpset binary.
+### than using an automated SSH script. It uses the snmpset binary. (SNMP_STRING) must be replaced with the appropriate
+### SNMP string (must be RW, not Community).
 
 #!/bin/bash
 
@@ -17,6 +18,7 @@ getHostname(){
 }
 
 rando=$1
+host_ip = `hostname -I`
 
 copyConfigs(){
         allIPs=()
@@ -33,8 +35,8 @@ copyConfigs(){
                 `/usr/bin/snmpset -c (SNMP_STRING) -v 2c $ip 1.3.6.1.4.1.9.9.96.1.1.1.1.2.$rando i 1 > /dev/null`
                 `/usr/bin/snmpset -c (SNMP_STRING) -v 2c $ip 1.3.6.1.4.1.9.9.96.1.1.1.1.3.$rando i 1 > /dev/null`
                 `/usr/bin/snmpset -c (SNMP_STRING) -v 2c $ip 1.3.6.1.4.1.9.9.96.1.1.1.1.4.$rando i 4 > /dev/null`
-                `/usr/bin/snmpset -c (SNMP_STRING) -v 2c $ip 1.3.6.1.4.1.9.9.96.1.1.1.1.5.$rando a 10.9.50.225 > /dev/null`
-                `/usr/bin/snmpset -c (SNMP_STRING) -v 2c $ip 1.3.6.1.4.1.9.9.96.1.1.1.1.6.$rando s config_change.txt > /dev/null`
+                `/usr/bin/snmpset -c (SNMP_STRING) -v 2c $ip 1.3.6.1.4.1.9.9.96.1.1.1.1.5.$rando a  > /dev/null`
+                `/usr/bin/snmpset -c (SNMP_STRING) -v 2c $ip 1.3.6.1.4.1.9.9.96.1.1.1.1.6.$rando s $host_ip > /dev/null`
                 `/usr/bin/snmpset -c (SNMP_STRING) -v 2c $ip 1.3.6.1.4.1.9.9.96.1.1.1.1.14.$rando i 1 > /dev/null`
                 echo "Changed ${hostname} on ${ip}"
         done
