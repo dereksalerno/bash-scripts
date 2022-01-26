@@ -8,6 +8,12 @@ getHostname(){
         hosty=`echo "$hosty" | cut -d'"' -f 2`
         echo $hosty
 }
+# Check for snmpset
+if command -v snmpset >/dev/null 2>&1 ; then
+    echo "snmpset found"
+else
+    echo "snmpset not found"
+fi
 
 rando=$1
 host_ip = `hostname -i`
